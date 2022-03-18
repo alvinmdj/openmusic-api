@@ -1,43 +1,139 @@
+const ClientError = require('../../exceptions/ClientError');
+
 class AlbumsHandler {
   constructor(service, validator) {
     this._service = service;
     this._validator = validator;
 
-    this.postAlbumsHandler = this.postAlbumsHandler.bind(this);
-    this.getAlbumsHandler = this.getAlbumsHandler.bind(this);
-    this.putAlbumsHandler = this.putAlbumsHandler.bind(this);
-    this.deleteAlbumsHandler = this.deleteAlbumsHandler.bind(this);
+    this.postAlbumHandler = this.postAlbumHandler.bind(this);
+    this.getAlbumByIdHandler = this.getAlbumByIdHandler.bind(this);
+    this.putAlbumByIdHandler = this.putAlbumByIdHandler.bind(this);
+    this.deleteAlbumByIdHandler = this.deleteAlbumByIdHandler.bind(this);
   }
 
-  async postAlbumsHandler(request, h) {
+  async postAlbumHandler(request, h) {
     try {
-      
-    } catch (error) {
+      this._validator.validateAlbumPayload(request.payload);
+      const { name, year } = request.payload;
 
+      const albumId = await this._service.addAlbum({ name, year });
+
+      const response = h.response({
+        status: 'success',
+        data: { albumId },
+      });
+      response.code(201);
+      return response;
+    } catch (error) {
+      if (error instanceof ClientError) {
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
+      }
+
+      // Server error
+      const response = h.response({
+        status: 'error',
+        message: 'Internal server error',
+      });
+      response.code(500);
+      console.log(error);
+      return response;
     }
   }
 
-  async getAlbumsHandler(request, h) {
+  async getAlbumByIdHandler(request, h) {
     try {
-
+      const { id } = request.params;
+      const album = await this._service.getAlbumById(id);
+      return {
+        status: 'success',
+        data: { album },
+      };
     } catch (error) {
+      if (error instanceof ClientError) {
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
+      }
 
+      // Server error
+      const response = h.response({
+        status: 'error',
+        message: 'Internal server error',
+      });
+      response.code(500);
+      console.log(error);
+      return response;
     }
   }
 
-  async putAlbumsHandler(request, h) {
+  async putAlbumByIdHandler(request, h) {
     try {
+      this._validator.validateAlbumPayload(request.payload);
+      const { id } = request.params;
 
+      await this._service.editAlbumById(id, request.payload);
+
+      return {
+        status: 'success',
+        message: 'Album updated successfully',
+      };
     } catch (error) {
+      if (error instanceof ClientError) {
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
+      }
 
+      // Server error
+      const response = h.response({
+        status: 'error',
+        message: 'Internal server error',
+      });
+      response.code(500);
+      console.log(error);
+      return response;
     }
   }
 
-  async deleteAlbumsHandler(request, h) {
+  async deleteAlbumByIdHandler(request, h) {
     try {
+      const { id } = request.params;
 
+      await this._service.deleteAlbumById(id);
+
+      return {
+        status: 'success',
+        message: 'Album deleted successfully',
+      };
     } catch (error) {
+      if (error instanceof ClientError) {
+        const response = h.response({
+          status: 'fail',
+          message: error.message,
+        });
+        response.code(error.statusCode);
+        return response;
+      }
 
+      // Server error
+      const response = h.response({
+        status: 'error',
+        message: 'Internal server error',
+      });
+      response.code(500);
+      console.log(error);
+      return response;
     }
   }
 }
