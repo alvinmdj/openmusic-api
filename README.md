@@ -54,6 +54,7 @@ npm run lint
 - Open Postman and import:
   - ```postman_collection.json file```
   - ```postman_environment.json file```
+
   **Note:** both files are available inside the ```postman``` folder.
 
 - In Postman, click ```Open Music API Test collection``` > ```Run collection``` > ```Run Open Music API Test```.
