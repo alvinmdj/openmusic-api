@@ -64,6 +64,13 @@ npm run lint
 - node-pg-migrate:
 
 ```sh
+# commands used in this project:
+npm run migrate create-table-albums
+npm run migrate create-table-songs
+
+# after configuring the migration files:
+npm run migrate up
+
 # command available after setup migrate script in package.json
 npm run migrate ...
 

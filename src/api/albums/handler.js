@@ -9,13 +9,37 @@ class AlbumsHandler {
     this.deleteAlbumsHandler = this.deleteAlbumsHandler.bind(this);
   }
 
-  async postAlbumsHandler() {}
+  async postAlbumsHandler(request, h) {
+    try {
+      
+    } catch (error) {
 
-  async getAlbumsHandler() {}
+    }
+  }
 
-  async putAlbumsHandler() {}
+  async getAlbumsHandler(request, h) {
+    try {
 
-  async deleteAlbumsHandler() {}
+    } catch (error) {
+
+    }
+  }
+
+  async putAlbumsHandler(request, h) {
+    try {
+
+    } catch (error) {
+
+    }
+  }
+
+  async deleteAlbumsHandler(request, h) {
+    try {
+
+    } catch (error) {
+
+    }
+  }
 }
 
 module.exports = AlbumsHandler;
