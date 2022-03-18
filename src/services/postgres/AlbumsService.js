@@ -30,11 +30,24 @@ class AlbumsService {
       text: 'SELECT * FROM albums WHERE id = $1',
       values: [id],
     };
-
     const result = await this._pool.query(query);
 
     if (!result.rows.length) {
       throw new NotFoundError('Album not found');
+    }
+
+    // get songs by album id
+    const query2 = {
+      text: 'SELECT id, title, performer FROM songs WHERE album_id = $1',
+      values: [id],
+    };
+    const result2 = await this._pool.query(query2);
+
+    if (result2.rows.length) {
+      return {
+        ...result.rows[0],
+        songs: result2.rows,
+      };
     }
 
     return result.rows[0];

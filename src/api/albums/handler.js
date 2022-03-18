@@ -51,7 +51,9 @@ class AlbumsHandler {
       const album = await this._service.getAlbumById(id);
       return {
         status: 'success',
-        data: { album },
+        data: {
+          album,
+        },
       };
     } catch (error) {
       if (error instanceof ClientError) {
