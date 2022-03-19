@@ -1,5 +1,3 @@
-const ClientError = require('../../exceptions/ClientError');
-
 class SongsHandler {
   constructor(service, validator) {
     this._service = service;
@@ -13,36 +11,16 @@ class SongsHandler {
   }
 
   async postSongHandler({ payload }, h) {
-    try {
-      this._validator.validateSongPayload(payload);
+    this._validator.validateSongPayload(payload);
 
-      const songId = await this._service.addSong(payload);
+    const songId = await this._service.addSong(payload);
 
-      const response = h.response({
-        status: 'success',
-        data: { songId },
-      });
-      response.code(201);
-      return response;
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server error
-      const response = h.response({
-        status: 'error',
-        message: 'Internal server error',
-      });
-      response.code(500);
-      console.log(error);
-      return response;
-    }
+    const response = h.response({
+      status: 'success',
+      data: { songId },
+    });
+    response.code(201);
+    return response;
   }
 
   async getSongsHandler(request) {
@@ -56,96 +34,36 @@ class SongsHandler {
     };
   }
 
-  async getSongByIdHandler(request, h) {
-    try {
-      const { id } = request.params;
-      const song = await this._service.getSongById(id);
-      return {
-        status: 'success',
-        data: { song },
-      };
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server error
-      const response = h.response({
-        status: 'error',
-        message: 'Internal server error',
-      });
-      response.code(500);
-      console.log(error);
-      return response;
-    }
+  async getSongByIdHandler(request) {
+    const { id } = request.params;
+    const song = await this._service.getSongById(id);
+    return {
+      status: 'success',
+      data: { song },
+    };
   }
 
-  async putSongByIdHandler(request, h) {
-    try {
-      this._validator.validateSongPayload(request.payload);
-      const { id } = request.params;
+  async putSongByIdHandler(request) {
+    this._validator.validateSongPayload(request.payload);
+    const { id } = request.params;
 
-      await this._service.editSongById(id, request.payload);
+    await this._service.editSongById(id, request.payload);
 
-      return {
-        status: 'success',
-        message: 'Song updated successfully',
-      };
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server error
-      const response = h.response({
-        status: 'error',
-        message: 'Internal server error',
-      });
-      response.code(500);
-      console.log(error);
-      return response;
-    }
+    return {
+      status: 'success',
+      message: 'Song updated successfully',
+    };
   }
 
-  async deleteSongByIdHandler(request, h) {
-    try {
-      const { id } = request.params;
+  async deleteSongByIdHandler(request) {
+    const { id } = request.params;
 
-      await this._service.deleteSongById(id);
+    await this._service.deleteSongById(id);
 
-      return {
-        status: 'success',
-        message: 'Song deleted successfully',
-      };
-    } catch (error) {
-      if (error instanceof ClientError) {
-        const response = h.response({
-          status: 'fail',
-          message: error.message,
-        });
-        response.code(error.statusCode);
-        return response;
-      }
-
-      // Server error
-      const response = h.response({
-        status: 'error',
-        message: 'Internal server error',
-      });
-      response.code(500);
-      console.log(error);
-      return response;
-    }
+    return {
+      status: 'success',
+      message: 'Song deleted successfully',
+    };
   }
 }
 
