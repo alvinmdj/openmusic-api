@@ -33,6 +33,33 @@ cd openmusic-api
 npm install
 ```
 
+- Copy ```.env.example``` and paste as ```.env```:
+
+```sh
+cp .env.example .env
+```
+
+- Create database and setup environment variables in ```.env```:
+
+```sh
+# server configs
+HOST=localhost
+PORT=5000
+
+# node-postgres configs
+PGUSER=<username>
+PGPASSWORD=<password>
+PGDATABASE=<dbname>
+PGHOST=localhost
+PGPORT=5432
+```
+
+- Run database migration:
+
+```sh
+npm run migrate up
+```
+
 - Run (development):
 
 ```sh
