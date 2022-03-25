@@ -71,6 +71,24 @@ class PlaylistsService {
       throw new AuthorizationError('You are not authorized to perform this action');
     }
   }
+
+  async addPlaylistSong(playlistId, songId) {
+    const id = `playlist-song-${nanoid(16)}`;
+
+    const query = {
+      text: 'INSERT INTO playlist_songs (id, playlist_id, song_id) VALUES ($1, $2, $3) RETURNING id',
+      values: [id, playlistId, songId],
+    };
+
+    const result = await this._pool.query(query);
+    console.log(result);
+
+    if (!result.rows[0].id) {
+      throw new InvariantError('Song could not be added to playlist');
+    }
+
+    return result.rows[0].id;
+  }
 }
 
 module.exports = PlaylistsService;
