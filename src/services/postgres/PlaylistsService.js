@@ -127,6 +127,21 @@ class PlaylistsService {
       songs: songsResult.rows,
     };
   }
+
+  async deletePlaylistSong(playlistId, songId) {
+    const query = {
+      text: 'DELETE FROM playlist_songs WHERE playlist_id = $1 AND song_id = $2 RETURNING id',
+      values: [playlistId, songId],
+    };
+
+    const result = await this._pool.query(query);
+
+    console.log(result.rows);
+
+    if (!result.rows.length) {
+      throw new InvariantError('Failed to delete song from playlist');
+    }
+  }
 }
 
 module.exports = PlaylistsService;
