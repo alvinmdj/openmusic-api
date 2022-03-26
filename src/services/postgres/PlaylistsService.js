@@ -7,6 +7,7 @@ const AuthorizationError = require('../../exceptions/AuthorizationError');
 class PlaylistsService {
   constructor() {
     this._pool = new Pool();
+    // TODO: IMPLEMENTS COLLABORATIONS SERVICE
   }
 
   async addPlaylist({ name, owner }) {
