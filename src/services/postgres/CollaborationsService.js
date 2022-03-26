@@ -36,6 +36,19 @@ class CollaborationsService {
       throw new InvariantError('Collaboration could not be deleted');
     }
   }
+
+  async verifyCollaborator(playlistId, userId) {
+    const query = {
+      text: 'SELECT * FROM collaborations WHERE playlist_id = $1 AND user_id = $2',
+      values: [playlistId, userId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new InvariantError('Could not verify collaborator');
+    }
+  }
 }
 
 module.exports = CollaborationsService;
