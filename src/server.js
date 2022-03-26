@@ -32,7 +32,10 @@ const playlists = require('./api/playlists');
 const PlaylistsService = require('./services/postgres/PlaylistsService');
 const PlaylistsValidator = require('./validator/playlists');
 
-// TODO: IMPORT COLLABORATIONS PLUGIN, SERVICE, AND VALIDATOR
+// collaborations
+const collaborations = require('./api/collaborations');
+const CollaborationsService = require('./services/postgres/CollaborationsService');
+const CollaborationsValidator = require('./validator/collaborations');
 
 // server init
 const init = async () => {
@@ -41,7 +44,7 @@ const init = async () => {
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
-  // TODO: INIT COLLABORATIONS SERVICE INSTANCE AND PASS AS A PARAMS TO PLAYLISTS SERVICE
+  const collaborationsService = new CollaborationsService();
   const playlistsService = new PlaylistsService();
 
   // server setup
@@ -119,7 +122,15 @@ const init = async () => {
         validator: PlaylistsValidator,
       },
     },
-    // TODO: REGISTER PLUGIN FOR COLLABORATIONS
+    {
+      plugin: collaborations,
+      options: {
+        collaborationsService,
+        playlistsService,
+        usersService,
+        validator: CollaborationsValidator,
+      },
+    },
   ]);
 
   // error handling
