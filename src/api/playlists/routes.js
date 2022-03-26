@@ -31,14 +31,14 @@ const routes = (handler) => [
       auth: 'openmusic_jwt',
     },
   },
-  // {
-  //   method: 'GET',
-  //   path: '/playlists/{id}/songs',
-  //   handler: handler.getPlaylistSongsHandler,
-  //   options: {
-  //     auth: 'openmusic_jwt',
-  //   },
-  // },
+  {
+    method: 'GET',
+    path: '/playlists/{id}/songs',
+    handler: handler.getPlaylistSongsHandler,
+    options: {
+      auth: 'openmusic_jwt',
+    },
+  },
   // {
   //   method: 'DELETE',
   //   path: '/playlists/{id}/songs',
