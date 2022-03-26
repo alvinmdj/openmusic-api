@@ -52,6 +52,11 @@ PGPASSWORD=<password>
 PGDATABASE=<dbname>
 PGHOST=localhost
 PGPORT=5432
+
+# JWT token
+ACCESS_TOKEN_KEY=<secret-key>
+REFRESH_TOKEN_KEY=<another-secret-key>
+ACCESS_TOKEN_AGE=<duration-in-seconds>
 ```
 
 - Run database migration:
