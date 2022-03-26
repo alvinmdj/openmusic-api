@@ -10,6 +10,7 @@ class PlaylistsHandler {
     this.postPlaylistSongHandler = this.postPlaylistSongHandler.bind(this);
     this.getPlaylistSongsHandler = this.getPlaylistSongsHandler.bind(this);
     this.deletePlaylistSongHandler = this.deletePlaylistSongHandler.bind(this);
+    this.getPlaylistActivitiesHandler = this.getPlaylistActivitiesHandler.bind(this);
   }
 
   async postPlaylistHandler(request, h) {
@@ -60,7 +61,7 @@ class PlaylistsHandler {
 
     await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
     await this._songsService.verifySongIsExist(songId);
-    await this._playlistsService.addPlaylistSong(playlistId, songId);
+    await this._playlistsService.addPlaylistSong(playlistId, songId, credentialId);
 
     const response = h.response({
       status: 'success',
@@ -89,7 +90,7 @@ class PlaylistsHandler {
     const { id: credentialId } = request.auth.credentials;
 
     await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
-    await this._playlistsService.deletePlaylistSong(playlistId, songId);
+    await this._playlistsService.deletePlaylistSong(playlistId, songId, credentialId);
 
     return {
       status: 'success',
@@ -101,12 +102,13 @@ class PlaylistsHandler {
     const { id: playlistId } = request.params;
     const { id: credentialId } = request.auth.credentials;
 
+    await this._playlistsService.verifyPlaylistIsExist(playlistId);
     await this._playlistsService.verifyPlaylistAccess(playlistId, credentialId);
     const activities = await this._playlistsService.getPlaylistActivities(playlistId);
 
     return {
       status: 'success',
-      data: { activities },
+      data: { playlistId, activities },
     };
   }
 }
