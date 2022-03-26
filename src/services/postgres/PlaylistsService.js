@@ -31,8 +31,8 @@ class PlaylistsService {
     const query = {
       text: `
         SELECT playlists.id, playlists.name, users.username FROM playlists
-        INNER JOIN users ON playlists.owner = users.id
-        INNER JOIN collaborations ON playlists.id = collaborations.playlist_id
+        LEFT JOIN users ON playlists.owner = users.id
+        LEFT JOIN collaborations ON playlists.id = collaborations.playlist_id
         WHERE playlists.owner = $1 OR collaborations.user_id = $1
       `,
       values: [user],
@@ -108,7 +108,6 @@ class PlaylistsService {
     if (!playlistResult.rows.length) {
       throw new InvariantError('Playlist not found');
     }
-    console.log(playlistResult.rows);
 
     const songsQuery = {
       text: `
@@ -138,8 +137,6 @@ class PlaylistsService {
     };
 
     const result = await this._pool.query(query);
-
-    console.log(result.rows);
 
     if (!result.rows.length) {
       throw new InvariantError('Failed to delete song from playlist');
