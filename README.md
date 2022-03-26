@@ -9,7 +9,7 @@
 ## Requirements
 
 - Node.js v16.13.2+
-- NPM v8.1.2
+- NPM v8.1.2+
 - Postgres v13.3+
 - Postman (for testing)
 
