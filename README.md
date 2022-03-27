@@ -4,6 +4,7 @@
 
 - [Hapi](https://hapi.dev/)
 - [Joi](https://joi.dev/api/)
+- [PostgreSQL](https://www.postgresql.org/docs/current/index.html)
 - [Node-Postgres](https://node-postgres.com/)
 
 ## Requirements
