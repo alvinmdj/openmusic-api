@@ -9,11 +9,14 @@
 
 ## Features
 
-- CRUD albums, songs, playlists
+- CRUD albums and songs
 - Search song by name and/or performer
+- Data validation
+- Error handling
 - Authentication & Authorization
-- Add song to playlist
-- Playlist collaboration
+- Manage playlists (private)
+- Playlist collaborations
+- Playlist activities history
 
 ## Requirements
 
