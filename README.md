@@ -7,6 +7,14 @@
 - [PostgreSQL](https://www.postgresql.org/docs/current/index.html)
 - [Node-Postgres](https://node-postgres.com/)
 
+## Features
+
+- CRUD albums, songs, playlists
+- Search song by name and/or performer
+- Authentication & Authorization
+- Add song to playlist
+- Playlist collaboration
+
 ## Requirements
 
 - Node.js v16.13.2+
