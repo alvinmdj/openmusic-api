@@ -29,7 +29,7 @@
 - [PostgreSQL v13.3+](https://www.postgresql.org/)
 - [RabbitMQ v3.9+](https://www.rabbitmq.com/)
 - [Postman](https://www.postman.com/) (for testing)
-- [openmusic-qconsumer](https://github.com/alvinmdj/openmusic-qconsumer) to enable notes export feature
+- [openmusic-qconsumer](https://github.com/alvinmdj/openmusic-qconsumer) to enable playlists export feature
 
 ## Installation
 
@@ -92,8 +92,11 @@ npm run migrate up
 - Run (development):
 
 ```sh
-# with nodemon
+# run open music api
 npm run start
+
+# note: also run the openmusic-qconsumer to enable playlists exports feature
+# https://github.com/alvinmdj/notes-app-queue-consumer
 ```
 
 - Run lint:
