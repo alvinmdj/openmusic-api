@@ -105,6 +105,64 @@ class AlbumsService {
       throw new NotFoundError('Failed to update album cover, ID not found');
     }
   }
+
+  async verifyAlbumIsExist(albumId) {
+    const query = {
+      text: 'SELECT * FROM albums WHERE id = $1',
+      values: [albumId],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('Album not found');
+    }
+  }
+
+  async addAlbumLikeOrDislikeById(userId, albumId) {
+    const id = `like-${nanoid(16)}`;
+
+    const getUserLikeQuery = {
+      text: 'SELECT * FROM user_album_likes WHERE user_id = $1 AND album_id = $2',
+      values: [userId, albumId],
+    };
+
+    const getUserLikeResult = await this._pool.query(getUserLikeQuery);
+
+    let query = {
+      text: '',
+      values: [],
+    };
+
+    if (!getUserLikeResult.rows.length) {
+      query = {
+        text: 'INSERT INTO user_album_likes VALUES ($1, $2, $3) RETURNING id',
+        values: [id, userId, albumId],
+      };
+    } else {
+      query = {
+        text: 'DELETE FROM user_album_likes WHERE user_id = $1 AND album_id = $2 RETURNING id',
+        values: [userId, albumId],
+      };
+    }
+
+    await this._pool.query(query);
+  }
+
+  async getAlbumLikeCountById(id) {
+    const query = {
+      text: 'SELECT COUNT(*) FROM user_album_likes WHERE album_id = $1',
+      values: [id],
+    };
+
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
+      throw new NotFoundError('No likes found for this album');
+    }
+
+    return Number(result.rows[0].count);
+  }
 }
 
 module.exports = AlbumsService;
