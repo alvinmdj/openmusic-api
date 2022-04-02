@@ -69,6 +69,12 @@ PGPORT=5432
 ACCESS_TOKEN_KEY=<secret-key>
 REFRESH_TOKEN_KEY=<another-secret-key>
 ACCESS_TOKEN_AGE=<duration-in-seconds>
+
+# Message broker
+RABBITMQ_SERVER=amqp://localhost
+
+# Redis
+REDIS_SERVER=localhost
 ```
 
 - Run database migration:
@@ -99,7 +105,7 @@ npm run lint
   - ```postman_collection.json file```
   - ```postman_environment.json file```
 
-  **Note:** both files are available inside the ```postman``` folder.
+  **Note:** both files are available inside the ```postman``` folder and use the latest version: ```postman-test-v3```.
 
 - In Postman:
   - Set environment to ```OpenMusic API Test```
@@ -132,4 +138,20 @@ migrate down
 # execute previous migration
 # this will run a down migration followed with an up migration
 migrate redo
+```
+
+- Clear database
+
+```sh
+# login
+psql -U <username> -d <dbname>
+
+# show tables
+\dt
+
+# clear data from tables (truncate)
+truncate albums, songs, users, authentications, playlists, playlist_songs, playlist_song_activities, collaborations, user_album_likes;
+
+# quit
+\q
 ```
