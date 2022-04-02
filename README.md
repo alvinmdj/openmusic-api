@@ -6,6 +6,9 @@
 - [Joi](https://joi.dev/api/)
 - [PostgreSQL](https://www.postgresql.org/docs/current/index.html)
 - [Node-Postgres](https://node-postgres.com/)
+- [JWT](https://jwt.io/)
+- [RabbitMQ](https://www.rabbitmq.com/)
+- [Redis](https://redis.io/)
 
 ## Features
 
