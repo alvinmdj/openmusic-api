@@ -24,10 +24,12 @@
 
 ## Requirements
 
-- Node.js v16.13.2+
-- NPM v8.1.2+
-- Postgres v13.3+
-- Postman (for testing)
+- [Node.js v16.13+](https://nodejs.org/en/)
+- [NPM v8.1+](https://www.npmjs.com/package/npm)
+- [PostgreSQL v13.3+](https://www.postgresql.org/)
+- [RabbitMQ v3.9+](https://www.rabbitmq.com/)
+- [Postman](https://www.postman.com/) (for testing)
+- [openmusic-qconsumer](https://github.com/alvinmdj/openmusic-qconsumer) to enable notes export feature
 
 ## Installation
 
