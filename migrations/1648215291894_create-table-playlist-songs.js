@@ -18,7 +18,7 @@ exports.up = (pgm) => {
   });
 
   /**
-   * add UNIQUE constraint on note_id and user_id columns
+   * add UNIQUE constraint on playlist_id and song_id columns
    * to prevent duplicate entries between both values
    */
   pgm.addConstraint('playlist_songs', 'unique_playlist_id_and_song_id', 'UNIQUE(playlist_id, song_id)');
