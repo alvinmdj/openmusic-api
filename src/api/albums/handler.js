@@ -95,16 +95,20 @@ class AlbumsHandler {
     return response;
   }
 
-  async getAlbumLikeCountByIdHandler(request) {
+  async getAlbumLikeCountByIdHandler(request, h) {
     const { id } = request.params;
 
     await this._albumsService.verifyAlbumIsExist(id);
     const likes = await this._albumsService.getAlbumLikeCountById(id);
 
-    return {
+    const response = h.response({
       status: 'success',
-      data: { likes },
-    };
+      data: typeof likes === 'object' ? { likes: likes.count } : { likes },
+    });
+    if (typeof likes === 'object') {
+      response.header('X-Data-Source', likes.source);
+    }
+    return response;
   }
 }
 

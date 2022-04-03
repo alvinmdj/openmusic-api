@@ -47,10 +47,14 @@ const ExportsValidator = require('./validator/exports');
 // storage
 const StorageService = require('./services/storage/StorageService');
 
+// cache
+const CacheService = require('./services/redis/CacheService');
+
 // server init
 const init = async () => {
   // init service instances
-  const albumsService = new AlbumsService();
+  const cacheService = new CacheService();
+  const albumsService = new AlbumsService(cacheService);
   const songsService = new SongsService();
   const usersService = new UsersService();
   const authenticationsService = new AuthenticationsService();
