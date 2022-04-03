@@ -5,9 +5,10 @@ const NotFoundError = require('../../exceptions/NotFoundError');
 const AuthorizationError = require('../../exceptions/AuthorizationError');
 
 class PlaylistsService {
-  constructor(collaborationsService) {
+  constructor(collaborationsService, cacheService) {
     this._pool = new Pool();
     this._collaborationsService = collaborationsService;
+    this._cacheService = cacheService;
   }
 
   async addPlaylist({ name, owner }) {
@@ -24,28 +25,39 @@ class PlaylistsService {
       throw new InvariantError('Playlist could not be created');
     }
 
+    await this._cacheService.delete(`playlists-${owner}`);
     return result.rows[0].id;
   }
 
   async getPlaylists(user) {
-    const query = {
-      text: `
-        SELECT playlists.id, playlists.name, users.username FROM playlists
-        LEFT JOIN users ON playlists.owner = users.id
-        LEFT JOIN collaborations ON playlists.id = collaborations.playlist_id
-        WHERE playlists.owner = $1 OR collaborations.user_id = $1
-      `,
-      values: [user],
-    };
+    try {
+      // get playlists from cache
+      const result = await this._cacheService.get(`playlists-${user}`);
+      return JSON.parse(result);
+    } catch (error) {
+      // if cache is empty, get playlists from db
+      const query = {
+        text: `
+          SELECT playlists.id, playlists.name, users.username FROM playlists
+          LEFT JOIN users ON playlists.owner = users.id
+          LEFT JOIN collaborations ON playlists.id = collaborations.playlist_id
+          WHERE playlists.owner = $1 OR collaborations.user_id = $1
+        `,
+        values: [user],
+      };
 
-    const result = await this._pool.query(query);
+      const result = await this._pool.query(query);
 
-    return result.rows;
+      // save playlists to cache
+      await this._cacheService.set(`playlists-${user}`, JSON.stringify(result.rows));
+
+      return result.rows;
+    }
   }
 
   async deletePlaylistById(id) {
     const query = {
-      text: 'DELETE FROM playlists WHERE id = $1 RETURNING id',
+      text: 'DELETE FROM playlists WHERE id = $1 RETURNING id, owner',
       values: [id],
     };
 
@@ -54,6 +66,9 @@ class PlaylistsService {
     if (!result.rows.length) {
       throw new NotFoundError('Failed to delete playlist. Id not found');
     }
+
+    const { owner } = result.rows[0];
+    await this._cacheService.delete(`playlists-${owner}`);
   }
 
   async verifyPlaylistOwner(id, owner) {
@@ -91,6 +106,7 @@ class PlaylistsService {
 
     await this.addPlaylistActivity(playlistId, songId, userId, 'add');
 
+    await this._cacheService.delete(`playlists-${userId}`);
     return result.rows[0].id;
   }
 
@@ -144,6 +160,7 @@ class PlaylistsService {
       throw new InvariantError('Failed to delete song from playlist');
     }
 
+    await this._cacheService.delete(`playlists-${userId}`);
     await this.addPlaylistActivity(playlistId, songId, userId, 'delete');
   }
 
