@@ -31,8 +31,9 @@
 - [NPM v8.1+](https://www.npmjs.com/package/npm)
 - [PostgreSQL v13.3+](https://www.postgresql.org/)
 - [RabbitMQ v3.9+](https://www.rabbitmq.com/)
+- [Redis](https://redis.io/) or [Memurai](https://www.memurai.com/)
 - [Postman](https://www.postman.com/) (for testing)
-- [openmusic-qconsumer](https://github.com/alvinmdj/openmusic-qconsumer) to enable playlists export feature
+- [openmusic-qconsumer](https://github.com/alvinmdj/openmusic-qconsumer) (to enable playlists export feature)
 
 ## Installation
 
