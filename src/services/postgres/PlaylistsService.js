@@ -106,7 +106,6 @@ class PlaylistsService {
 
     await this.addPlaylistActivity(playlistId, songId, userId, 'add');
 
-    await this._cacheService.delete(`playlists-${userId}`);
     return result.rows[0].id;
   }
 
@@ -160,7 +159,6 @@ class PlaylistsService {
       throw new InvariantError('Failed to delete song from playlist');
     }
 
-    await this._cacheService.delete(`playlists-${userId}`);
     await this.addPlaylistActivity(playlistId, songId, userId, 'delete');
   }
 
