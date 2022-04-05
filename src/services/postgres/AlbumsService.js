@@ -131,16 +131,11 @@ class AlbumsService {
     const getUserLikeResult = await this._pool.query(getUserLikeQuery);
 
     let query = {
-      text: '',
-      values: [],
+      text: 'INSERT INTO user_album_likes VALUES ($1, $2, $3) RETURNING id',
+      values: [id, userId, albumId],
     };
 
-    if (!getUserLikeResult.rows.length) {
-      query = {
-        text: 'INSERT INTO user_album_likes VALUES ($1, $2, $3) RETURNING id',
-        values: [id, userId, albumId],
-      };
-    } else {
+    if (getUserLikeResult.rows.length) {
       query = {
         text: 'DELETE FROM user_album_likes WHERE user_id = $1 AND album_id = $2 RETURNING id',
         values: [userId, albumId],
