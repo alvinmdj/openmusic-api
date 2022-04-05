@@ -58,7 +58,7 @@ class AlbumsService {
     };
     const songsResult = await this._pool.query(songsQuery);
 
-    if (songsResult.rows.length) {
+    if (songsResult.rowCount) {
       return {
         ...mappedAlbumResult,
         songs: songsResult.rows,
