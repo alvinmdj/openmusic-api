@@ -74,7 +74,7 @@ class AlbumsHandler {
 
     const response = h.response({
       status: 'success',
-      message: 'Sampul berhasil diunggah',
+      message: 'Album cover uploaded successfully',
     });
     response.code(201);
     return response;
