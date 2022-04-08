@@ -2,6 +2,7 @@
 
 ## Links
 
+- [Open Music API Documentation](https://documenter.getpostman.com/view/16534190/UVyxPsu6)
 - [Hapi](https://hapi.dev/)
 - [Joi](https://joi.dev/api/)
 - [PostgreSQL](https://www.postgresql.org/docs/current/index.html)
